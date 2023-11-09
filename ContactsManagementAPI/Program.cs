@@ -1,5 +1,8 @@
 global using ContactsManagementAPI.Models;
+global using ContactsManagementAPI.Data;
+global using Microsoft.EntityFrameworkCore;
 using ContactsManagementAPI.Services.ContactDetailService;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IContactDetailService, ContactDetailService>();
+builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();
 

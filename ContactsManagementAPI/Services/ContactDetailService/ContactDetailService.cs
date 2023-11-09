@@ -5,61 +5,74 @@ namespace ContactsManagementAPI.Services.ContactDetailService
 {
     public class ContactDetailService : IContactDetailService
     {
-        private static List<ContactDetails> contactList = new List<ContactDetails>
+        //private static List<ContactDetails> contactList = new List<ContactDetails>
+        //{
+        //    new ContactDetails
+        //    {
+        //        Id = 1,
+        //        Name = "Acc",
+        //        Email = "",
+        //        Address = "",
+        //        PhoneNumber = "*400#",
+        //        Note = "Check CellPhone's Account Balance"
+        //    },
+        //    new ContactDetails
+        //    {
+        //        Id = 2,
+        //        Name = "Police",
+        //        Email = "",
+        //        Address = "Nepal",
+        //        PhoneNumber = "100",
+        //        Note = "Emergency Police Station Number"
+        //    }
+        //};
+
+        private readonly DataContext _context;
+        public ContactDetailService(DataContext context)
         {
-            new ContactDetails
-            {
-                Id = 1,
-                Name = "Acc",
-                Email = "",
-                Address = "",
-                PhoneNumber = "*400#",
-                Note = "Check CellPhone's Account Balance"
-            },
-            new ContactDetails
-            {
-                Id = 2,
-                Name = "Police",
-                Email = "",
-                Address = "Nepal",
-                PhoneNumber = "100",
-                Note = "Emergency Police Station Number"
-            }
-        };
-        public List<ContactDetails> AddContact(ContactDetails contact)
+            _context = context;
+        }
+        public async Task<List<ContactDetails>> AddContact(ContactDetails contact)
         {
-            contactList.Add(contact);
-            return contactList;
+            _context.ContactDetailss.Add(contact);
+            await _context.SaveChangesAsync();
+
+            var contacts = await _context.ContactDetailss.ToListAsync();
+            return contacts;
         }
 
-        public List<ContactDetails>? DeleteContact(int id)
+        public async Task<List<ContactDetails?>> DeleteContact(int id)
         {
-            var contact = contactList.Find(x => x.Id == id);
+            var contact = await _context.ContactDetailss.FindAsync(id);
 
             if (contact == null) return null;
 
-            contactList.Remove(contact);
-            return contactList;
+            _context.ContactDetailss.Remove(contact);
+            await _context.SaveChangesAsync();
+
+            var contacts = await _context.ContactDetailss.ToListAsync();
+            return contacts;
         }
 
-        public List<ContactDetails> GetAllContacts()
+        public async Task<List<ContactDetails>> GetAllContacts()
         {
-            return contactList;
+            var contacts = await _context.ContactDetailss.ToListAsync();
+            return contacts;
         }
 
-        public ContactDetails? GetContactById(int id)
+        public async Task<ContactDetails>? GetContactById(int id)
         {
-            var contact = contactList.Find(x => x.Id == id);
+            var contact = await _context.ContactDetailss.FindAsync(id);
 
             if (contact == null) return null;
             
             return contact;
         }
 
-        public List<ContactDetails>? UpdateContact(int id, ContactDetails request)
+        public async Task<List<ContactDetails>>? UpdateContact(int id, ContactDetails request)
         {
-            var contact = contactList.Find(x => x.Id == id);
-
+            //Find Contact with the given ID
+            var contact = await _context.ContactDetailss.FindAsync(id);
             if (contact == null) return null;
 
             contact.Name = request.Name;
@@ -67,8 +80,11 @@ namespace ContactsManagementAPI.Services.ContactDetailService
             contact.Address = request.Address;
             contact.PhoneNumber = request.PhoneNumber;
             contact.Note = request.Note;
+            await _context.SaveChangesAsync();
 
-            return contactList;
+            //contacts get all the contacts of db and returns it
+            var contacts = await _context.ContactDetailss.ToListAsync();
+            return contacts;
         }
     }
 }

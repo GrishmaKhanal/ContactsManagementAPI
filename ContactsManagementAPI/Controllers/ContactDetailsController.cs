@@ -19,16 +19,13 @@ namespace ContactsManagementAPI.Controllers
 
         public async Task<ActionResult<List<ContactDetails>>> GetAllContacts()
         {
-            return _contactDetailService.GetAllContacts();
+            return await _contactDetailService.GetAllContacts();
         }
 
-
-        /*[HttpGet]
-          [Route("{id}")] */
         [HttpGet("{id}")]
         public async Task<ActionResult<List<ContactDetails>>> GetContactById(int id)
         {
-            var result = _contactDetailService.GetContactById(id);
+            var result = await _contactDetailService.GetContactById(id);
 
             if (result == null) return NotFound("The Contact Doesn't Exist.");
 
@@ -38,12 +35,12 @@ namespace ContactsManagementAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<List<ContactDetails>>> AddContact(ContactDetails contact)
         {
-            return _contactDetailService.AddContact(contact);
+            return await _contactDetailService.AddContact(contact);
         }
         [HttpPut("{id}")]
         public async Task<ActionResult<List<ContactDetails>>> UpdateContact(int id, ContactDetails request)
         {
-            var result = _contactDetailService.UpdateContact(id, request);
+            var result = await _contactDetailService.UpdateContact(id, request);
             if (result == null) return NotFound("This contact Doesnot exist to Update."); 
 
             return Ok(result);
@@ -52,7 +49,7 @@ namespace ContactsManagementAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<List<ContactDetails>>> DeleteContact(int id)
         {
-            var result = _contactDetailService.DeleteContact(id);
+            var result = await _contactDetailService.DeleteContact(id);
             if (result == null) return NotFound("This Contact Doesn't Exist.");
 
             return Ok(result);

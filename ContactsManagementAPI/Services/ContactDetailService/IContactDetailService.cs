@@ -2,11 +2,11 @@
 {
     public interface IContactDetailService
     {
-        List<ContactDetails> GetAllContacts();
-        ContactDetails? GetContactById(int id);
-        List<ContactDetails> AddContact(ContactDetails contact);
-        List<ContactDetails>? UpdateContact(int id, ContactDetails request);
-        List<ContactDetails>? DeleteContact(int id);
+        Task<List<ContactDetails>> GetAllContacts();
+        Task<ContactDetails>? GetContactById(int id);
+        Task<List<ContactDetails>> AddContact(ContactDetails contact);
+        Task<List<ContactDetails?>> UpdateContact(int id, ContactDetails request);
+        Task<List<ContactDetails?>> DeleteContact(int id);
 
     }
 }
